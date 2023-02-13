@@ -2,6 +2,10 @@
 const express = require('express');
 const bodyParser = require('body-parser'); //import after installation
 
+//import router
+const adminRoutes = require('./routes/admin.js')
+const shopRoutes = require('./routes/shop.js')
+
 //create express application, initializes a new app
 const app = express();
 
@@ -9,19 +13,11 @@ const app = express();
 //be parsed no matter where it ends up
 app.use(bodyParser.urlencoded({extended: false}));
 
-app.use('/add-product',(req,res,next) => {
-    res.send("<form action='/product' method='POST'><input type='text' name='title'><button type='submit'>Add Product</button></form>")
-})
+app.use(adminRoutes);
+app.use(shopRoutes);
 
-app.use('/product', (req, res, next)=> {
-    //extract what the user sent
-    console.log(req.body);
-    //redirection
-    res.redirect('/');
-});
-
-app.use('/',(req,res,next) => {
-    res.send("<h1>Hello from Express!</h1>")
+app.use((req, res, next) => {
+    res.status(404).send('<h1>Page not found</h1>')
 })
 
 app.listen(3000);
