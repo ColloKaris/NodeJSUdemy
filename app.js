@@ -14,6 +14,9 @@ const app = express();
 //be parsed no matter where it ends up
 app.use(bodyParser.urlencoded({extended: false}));
 
+//serve files statically
+app.use(express.static(path.join(__dirname, 'public')))
+
 app.use('/admin',adminRoutes);
 app.use(shopRoutes);
 
