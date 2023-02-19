@@ -5,7 +5,7 @@ const express = require('express');
 const bodyParser = require('body-parser'); //import after installation
 
 //import router
-const adminRoutes = require('./routes/admin.js')
+const adminData = require('./routes/admin.js')
 const shopRoutes = require('./routes/shop.js')
 
 //create express application, initializes a new app
@@ -17,7 +17,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 //serve files statically
 app.use(express.static(path.join(__dirname, 'public')))
 
-app.use('/admin',adminRoutes);
+app.use('/admin',adminData.routes);
 app.use(shopRoutes);
 
 app.use((req, res, next) => {
