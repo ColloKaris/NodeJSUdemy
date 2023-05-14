@@ -21,3 +21,5 @@ router.post("/add-product", (req, res, next) => {
 //module.exports = router;
 exports.routes = router;
 exports.products = products;
+
+//some changes aI should delete later on in the day
