@@ -1,37 +1,24 @@
 const path = require('path');
 
-//import express
 const express = require('express');
-const bodyParser = require('body-parser'); //import after installation
+const bodyParser = require('body-parser');
 
-//import router
-const adminRoutes = require('./routes/admin.js')
-const shopRoutes = require('./routes/shop.js')
+const errorController = require('./controllers/error');
 
-//create express application, initializes a new app
 const app = express();
 
-//LET EXPRESS JS KNOW THAT WE WILL USED A TEMPLATING ENGINE TO RENDER
-//DYNAMIC TEMPLATES - set  global configuration val
-app.set('view engine', 'pug');
-//app.set('view', 'views')
+app.set('view engine', 'ejs');
+app.set('views', 'views');
 
-//body parser - done before routing as each request should
-//be parsed no matter where it ends up
-app.use(bodyParser.urlencoded({extended: false}));
+const adminRoutes = require('./routes/admin');
+const shopRoutes = require('./routes/shop');
 
-//serve files statically
-app.use(express.static(path.join(__dirname, 'public')))
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.use('/admin',adminRoutes);
+app.use('/admin', adminRoutes);
 app.use(shopRoutes);
 
-app.use((req, res, next) => {
-    res.status(404).render('404', {pageTitle: 'Page Not Found'});
-})
-
+app.use(errorController.get404);
 
 app.listen(3000);
-
-//MOdel view controllergain
-//changes again
