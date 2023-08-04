@@ -34,10 +34,10 @@ app.use(errorController.get404);
 
 mongoose
   .connect(
-    'mongodb+srv://maximilian:9u4biljMQc4jjqbe@cluster0-ntrwp.mongodb.net/test?retryWrites=true'
+    'mongodb://127.0.0.1:27017/shop'
   )
-  .then(result => {
-    app.listen(3000);
+  .then(() => {
+    console.log("MONGODB CONNECTED")
   })
   .catch(err => {
     console.log(err);

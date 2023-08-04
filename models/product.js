@@ -1,3 +1,36 @@
+const mongoose = require('mongoos');
+
+const Schema = mongoos.Schema;
+
+// Create a new Schema
+const productSchema = new Schema(
+    {
+        title: {
+            type: String,
+            required: true
+        },
+        price: {
+            type: Number,
+            required: true
+        },
+        description: {
+            type: String,
+            required: true
+        },
+        imageUrl: {
+            type: String,
+            required: true
+        }
+    }
+);
+
+// create a model based on the Schema describe earlier
+
+
+
+
+
+
 // const mongodb = require('mongodb');
 // const getDb = require('../util/database').getDb;
 
