@@ -1,6 +1,6 @@
-const mongoose = require('mongoos');
+const mongoose = require('mongoose');
 
-const Schema = mongoos.Schema;
+const Schema = mongoose.Schema;
 
 // Create a new Schema
 const productSchema = new Schema(
@@ -25,7 +25,9 @@ const productSchema = new Schema(
 );
 
 // create a model based on the Schema describe earlier
+const Product = mongoose.model('Product', productSchema);
 
+module.exports = Product;
 
 
 
