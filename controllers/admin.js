@@ -21,69 +21,53 @@ exports.postAddProduct = async (req, res, next) => {
   res.redirect('/admin/products')
 };
 
-exports.getEditProduct = (req, res, next) => {
+exports.getEditProduct = async (req, res, next) => {
   const editMode = req.query.edit;
   if (!editMode) {
     return res.redirect('/');
   }
   const prodId = req.params.productId;
-  Product.findById(prodId)
-    // Product.findById(prodId)
-    .then(product => {
-      if (!product) {
-        return res.redirect('/');
-      }
-      res.render('admin/edit-product', {
-        pageTitle: 'Edit Product',
-        path: '/admin/edit-product',
-        editing: editMode,
-        product: product
-      });
-    })
-    .catch(err => console.log(err));
+  const product = await Product.findById(prodId);
+  if (!product) {
+    return res.redirect('/');
+  }
+  res.render('admin/edit-product', {
+    pageTitle: 'Edit Product',
+    path: '/admin/edit-product',
+    editing: editMode,
+    product: product
+  });
+
 };
 
-exports.postEditProduct = (req, res, next) => {
+exports.postEditProduct = async (req, res, next) => {
   const prodId = req.body.productId;
   const updatedTitle = req.body.title;
   const updatedPrice = req.body.price;
   const updatedImageUrl = req.body.imageUrl;
   const updatedDesc = req.body.description;
 
-  const product = new Product(
-    updatedTitle,
-    updatedPrice,
-    updatedDesc,
-    updatedImageUrl,
-    prodId
-  );
-  product
-    .save()
-    .then(result => {
-      console.log('UPDATED PRODUCT!');
-      res.redirect('/admin/products');
-    })
-    .catch(err => console.log(err));
+  const product = await Product.findById(prodId);
+  product.title = updatedTitle;
+  product.price = updatedPrice;
+  product.description = updatedDesc;
+  product.imageUrl = updatedImageUrl;
+  product.save();
+  res.redirect('/admin/products')
+
 };
 
-exports.getProducts = (req, res, next) => {
-  Product.fetchAll()
-    .then(products => {
-      res.render('admin/products', {
-        prods: products,
-        pageTitle: 'Admin Products',
-        path: '/admin/products'
-      });
-    })
-    .catch(err => console.log(err));
+exports.getProducts = async (req, res, next) => {
+  const product = await Product.find();
+  res.render('admin/products', {
+    prods: product,
+    pageTitle: 'Admin Products',
+    path: '/admin/products'
+  });
 };
 
-exports.postDeleteProduct = (req, res, next) => {
+exports.postDeleteProduct = async (req, res, next) => {
   const prodId = req.body.productId;
-  Product.deleteById(prodId)
-    .then(() => {
-      console.log('DESTROYED PRODUCT');
-      res.redirect('/admin/products');
-    })
-    .catch(err => console.log(err));
+  await Product.findByIdAndDelete(prodId);
+  res.redirect('/admin/products');
 };
