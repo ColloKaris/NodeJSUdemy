@@ -2,43 +2,31 @@ const mongoose = require('mongoose');
 
 const Schema = mongoose.Schema;
 
-// product should also have a userId field
+const productSchema = new Schema({
+  title: {
+    type: String,
+    required: true
+  },
+  price: {
+    type: Number,
+    required: true
+  },
+  description: {
+    type: String,
+    required: true
+  },
+  imageUrl: {
+    type: String,
+    required: true
+  },
+  userId: {
+    type: Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  }
+});
 
-// Create a new Schema
-const productSchema = new Schema(
-    {
-        title: {
-            type: String,
-            required: true
-        },
-        price: {
-            type: Number,
-            required: true
-        },
-        description: {
-            type: String,
-            required: true
-        },
-        imageUrl: {
-            type: String,
-            required: true
-        },
-        userId: {
-            type: Schema.Types.ObjectId,
-            ref: 'User',
-            required: true
-        }
-    }
-);
-
-// create a model based on the Schema describe earlier
-const Product = mongoose.model('Product', productSchema);
-
-module.exports = Product;
-
-
-
-
+module.exports = mongoose.model('Product', productSchema);
 
 // const mongodb = require('mongodb');
 // const getDb = require('../util/database').getDb;
